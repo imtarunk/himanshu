@@ -66,7 +66,11 @@ export default function Page() {
                 title={work.company}
                 subtitle={work.title}
                 href={work.href}
-                badges={"badges" in work ? work.badges : undefined}
+                badges={
+                  "badges" in work
+                    ? (work.badges as readonly string[])
+                    : undefined
+                }
                 period={`${work.start} - ${work.end ?? "Present"}`}
                 description={work.description}
               />
