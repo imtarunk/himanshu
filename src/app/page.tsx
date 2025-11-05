@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import React from "react";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -147,9 +148,25 @@ export default function Page() {
                   description={project.description}
                   dates={project.dates}
                   tags={project.technologies}
-                  image={project.image}
-                  video={project.video}
-                  links={project.links}
+                  image={
+                    "image" in project
+                      ? (project.image as string | undefined)
+                      : undefined
+                  }
+                  video={
+                    "video" in project
+                      ? (project.video as string | undefined)
+                      : undefined
+                  }
+                  links={
+                    "links" in project
+                      ? (project.links as readonly {
+                          icon: React.ReactNode;
+                          type: string;
+                          href: string;
+                        }[])
+                      : undefined
+                  }
                 />
               </BlurFade>
             ))}
@@ -180,7 +197,20 @@ export default function Page() {
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 14}>
             <ul className="mb-4 ml-4 divide-y divide-dashed border-l">
-              {DATA.hackathons.map((project, id) => (
+              {(
+                DATA.hackathons as unknown as Array<{
+                  title: string;
+                  description: string;
+                  location: string;
+                  dates: string;
+                  image?: string;
+                  links?: readonly {
+                    icon: React.ReactNode;
+                    title: string;
+                    href: string;
+                  }[];
+                }>
+              ).map((project, id) => (
                 <BlurFade
                   key={project.title + project.dates}
                   delay={BLUR_FADE_DELAY * 15 + id * 0.05}
